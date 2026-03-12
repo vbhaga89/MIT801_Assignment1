@@ -1,0 +1,31 @@
+\section{Methodology}\label{methodology}
+
+The UCI Diabetes 130-US hospitals (1999–2008) dataset is a publicly available dataset. It contains features that are numerical variables as well as categorical variables. Additionally, 
+there are many columns with missing data as well as duplicate rows. Logistic regression expects numerical values as input features. As a result it 
+is important to clean the data before it can be used.
+
+\subsection{Data Cleaning}\label{data_cleaning}
+
+Firstly, duplicate rows and empty columns were handled. The dataset was ordered in ascending order using the 'encounter\_id' column. Thereafter, the smallest 'encounter\_id' for a specific 'patient\_nbr'
+was removed. This was also done with the intention to use the 'encounter\_id' column to perform time-aware splitting during the experiment as mentioned in Section \ref{splitting}. Thereafter, missing values were handled. 
+It was observed that the 'weight' column was largely unpopulated. As a result this column was dropped. The next column with the biggest amount of missing values was the
+'payer\_code' column. The 'payer\_code' column was dropped as logically this column has no statistical importance on determining whether a patient readmits or not.
+Thereafter, the last three columns with missing values were dealt with: 'race', 'medical\_speciality', 'diag\_1', 'diag\_2' and 'diag\_3'. These three column required some form of
+imputation as all three columns were statistically important. The imputation for each of these columns were built into a custom DataCleaner class that is called in the pipeline setup
+so that when the imputation is performed, only data within a specific train, validation or test set was used. This was done to prevent data leakage. Since the 'race' column only contained
+a small portion of missing values, these values were imputed using the highest probability of the 'race' column within that split. Next, missing values in the 'medical speciality' column
+were classified as 'missing'. This column had over 70 categories, therefore, only the top 10 categories were selected, with the rest of data termed as 'other'. Lastly, the 'diag\_1', 'diag\_2' 
+and 'diag\_3' column's missing values were imputed using the most common category in each column. In addition, there were over 700 categories in each column which was then converted using frequency
+encoding.
+
+After dealing with duplicate rows and missing values, categorical variables that did not need one-hot encoding were handled. Firstly, the 'age' column was converted to numerical values 
+by taking the mean of the age range. Next, columns with single-valued categories were dropped. Thereafter, binary columns were converted to 0/1. Lastly, the target column 'readmitted' 
+was converted to a binary column where 1 represented readmission within 30 days and 0 represented no readmission within 30 days.
+
+
+\subsection{Model Creation}
+
+After the data was cleaned, the model was created using a pipeline. In the pipeline, firstly, the columns in need of imputation were handled by the DataCleaner class as mentioned
+in the Section \ref{data_cleaning}. Thereafter, a column transformer was used to normalize all numerical columns and one-hot encode all categorical columns. This baseline
+model was used for the various initial tests as well as for hyperparameter tuning. 
+

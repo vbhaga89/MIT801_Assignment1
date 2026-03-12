@@ -1,0 +1,44 @@
+\section{Discussion}
+
+\subsection{Controlled Learning-rate Experiment}\label{controlled_discussion}
+
+From the results obtained from Section \ref{controlled_learningrate_section}, it is clear that changing the learning rate has a clear impact on model training as well as model
+prediction. The 1e$^{-4}$ learning rate represents a learning rate that is too small. This is clearly evident from the slowest training time since the model takes very small steps. 
+This results in slower convergence and leads to underfitting under the maximum default iterations of a 1000 which can be seen in Table \ref{sgd_learningrate}. On the other 
+hand, the 1e$^{-2}$ learning rate represents a learning rate that is too large. The model makes too big steps that may result in the model failing to converge to a minimum. 
+As a result, the model oscillates and is unstable. This leads to poor generalisation which can be seen by the worst Test PR-AUC from Table \ref{sgd_learningrate}. Lastly, 
+we have the 1e$^{-3}$ learning rate which represents a balanced learning rate. This learning rate produces a model with the best overall results in terms of convergence and 
+generalisation as well as training time. This learning rate would be best fit for deployment.
+
+\subsection{Grid Search Hyperparameter Tuning}
+
+From the results obtained from Section \ref{gridsearch_section}, it is evident that there is a clear correlation between these results and the controlled learning rate sweep that
+was done in Section \ref{controlled_learningrate_section}. The best grid search configuration had a learning rate of 3e$^{-3}$ which closely aligns with the best learning rate
+obtained from the controlled learning rate sweep, 1e$^{-3}$. The best rank configuration also obtained a slightly better validation and test PR-AUC when compared to the best 
+learning rate's results obtained from the controlled learning rate sweep. This indicates that other parameters such as alpha and penalty had a role to play since these differed
+from the defaults used during the controlled learning rate sweep experiment.
+
+\subsection{Bayesian Optimization Hyperparameter Tuning}\label{bayesian_discussion}
+
+From the results obtained from Section \ref{bayesian_section}, in specific Table \ref{bayesian_grid}, it can be seen that Bayesian optimisation peformed slightly better than
+grid search in terms of generalisation. The main reason as to why this is the case boils down to essentially how each method works. Grid Search evaluates every possible 
+combination of parameters in the predefined grid. Bayesian optimization on the other hand, creates a probalisitic model of the objective function and uses previous trials to 
+decide which parameters to test next. Within the search space, it is able to more intelligently search based on promising previous trials. This is evident in the best 
+hyperparameter configuration for both tuning methods shown in Section \ref{gridsearch_section} and Section \ref{bayesian_section}. Both have fairly similar parameters
+with the exception that the parameters obtained from Bayesian optimization are more specific which in turn results in a better performance. This is due to the fact that
+grid search can only linearly sweep through the grid to find the best combination whereas with Bayesian optimization, the model is able to logarithmically search through
+the space with its only constraints being the upper and lower limit of the search space. This generally leads to better overall performance at the cost of computation 
+time depending on the number of calls made.
+
+\subsection{Comparative Analysis}
+
+Looking at all the results obtained from the Section \ref{results}, it is clear that there are pros and cons with both grid search and Bayesian optimization hyperparameter tuning methods.
+It is clear that when limited compute is of main concern, grid search is preferred over Bayesian optimization. This largely comes down to what was discussed in Section \ref{bayesian_discussion}
+since grid search simply evaluates all the combinations whereas Bayesian optimization uses a probalisitic model which is more computationally expensive. However, it must be noted
+that this preference largely comes to the search space as well. If a large grid space is required, this can significantly impact computation time and in that scenario, Bayesian
+optimization should be favoured instead. If model generalisation is of priority, then Bayesian optimization is preferred. Since Bayesian optimization can look much deeper into
+a search space, it can generally obtain a much better hyperparameter configuration that would produce the best evaluation results. This is also evident from the convergence
+plot (Figure \ref{convergence_plot}) which indicates that if more calls were used, this optimization technique would be able to find even better configurations that result
+in better performance. Lastly, it is also important to consider the learning rate used when optimising. It is clear from Section \ref{controlled_discussion} that the learning
+rate play a key role in model stability. Refining the optimum learning rate window at the beginning before running other optimization techniques can significantly reduce
+computation time and resources whilst producing better evaluation results.

@@ -1,0 +1,202 @@
+\section{Results}\label{results}
+
+\subsection{Baseline Model}\label{baseline_model}
+
+Table \ref{baseline} indicates the results of the baseline DummyClassifier model:
+
+\begin{table}[htbp]
+\caption{Baseline Model Results}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Train PR-AUC ($\mu \pm \sigma$) & Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC & Val Rec@P $\geq$ 0.8 ($\mu \pm \sigma$) & Train time (s)\\
+    \hline
+    0.04868 $\pm$ 0.002375 & 0.04133 $\pm$ 0.01357 & 0.06050 & 0.0 $\pm$ 0.0 &  2.808\\
+    \hline
+\end{tabular}
+}
+\label{baseline}
+\end{table}
+
+From this table, it can been seen that the baseline model performs on par with the PR-AUC baseline threshold of 4.5\% (equivalent to the ratio of positive cases to the total population). 
+The test PR-AUC is slighty higher than the threshold but still inline with what one could expect from a random model that does not use inputs characteristics to predict.
+
+\subsection{Controlled Learning-rate Experiment}\label{controlled_learningrate_section}
+
+The default parameters of the SGDClassifier model were used. The only parameters that were changed were the following:
+
+\[
+\begin{aligned}
+\text{loss} &= \text{log\_loss} \\
+\text{learning\_rate} &= \text{constant} \\
+\text{class\_weight} &= \text{balanced} \\
+\text{random\_state} &= 42.
+\end{aligned}
+\]
+
+The "class\_weight" parameter is set to 'balanced' to prevent bias towards the majority class. This is especially important when dealing with imbalanced datasets. 
+Finally, Table \ref{sgd_learningrate} illustrates the results obtained from sweeping the learning rate under these fixed parameters:
+
+\begin{table}[htbp]
+\caption{Learning-rate Sweep Results}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    LR (eta0) & Train PR-AUC ($\mu \pm \sigma$) & Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC & Val Rec@P $\geq$ 0.8 ($\mu \pm \sigma$) & Train Time (s) \\
+    \hline
+    1e-4 & 0.1450 $\pm$ 0.008539 & 0.09967 $\pm$ 0.03497 & 0.1070 & 0.0006289 $\pm$ 0.001406 & 4.3201\\
+    1e-3 & 0.1584 $\pm$ 0.01289 & 0.1071 $\pm$ 0.03752 & 0.1071 & 0.001258 $\pm$ 0.002813 & 3.538\\
+    1e-2 & 0.1383 $\pm$ 0.02150 & 0.09606 $\pm$ 0.03860 & 0.08772 & 0.001023 $\pm$ 0.001461 & 3.360\\
+    \hline
+\end{tabular}
+}
+\label{sgd_learningrate}
+\end{table}
+
+\subsection{Grid Search Hyperparameter Tuning}\label{gridsearch_section}
+
+GridSearchCV was then tested to find the most optimal hyperparameters. The following grid space was used:
+
+\[
+\begin{aligned}
+\text{learning\_rate} &= \{1e-4, 3e-4, 1e-3, 3e-3, 1e-2\} \\
+\text{alpha} &= \{1e-6, 1e-5, 1e-4, 1e-3\} \\
+\text{penalty} &= \{l_2, l_1\} \\
+\text{class\_weight} &= \{None, "balanced"\},
+\end{aligned}
+\]
+
+together with the default parameters of the \emph{SGDClassifier} model. The only parameters that were changed were the following:
+
+\[
+\begin{aligned}
+\text{loss} &= \text{log\_loss} \\
+\text{learning\_rate} &= \text{constant} \\
+\text{random\_state} &= 42.
+\end{aligned}
+\]
+
+The GridSearchCV function was run with the mentioned grid space on 5 folds. As a result a total of 400 fits were performed with results obtained for each possible configuration.
+Table \ref{gridsearch} illustrates the top 5 configurations after running GridSearchCV:
+
+\begin{table}[htbp]
+\caption{Top-5 GridSearchCV Results}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    Rank & $n_{0}$ & alpha & penalty & class$_{wt}$ & Val PR-AUC ($\mu \pm \sigma$) & Runtime (s)\\
+    \hline
+    1 & 3e-3 & 1e-5 & l$_{1}$ & balanced & 0.108537 $\pm$ 0.030966 & 2.024\\
+    2 & 3e-3 & 1e-6 & l$_{1}$ & balanced & 0.108509 $\pm$ 0.030986 & 2.825\\
+    3 & 1e-3 & 1e-3 & l$_{1}$ & balanced & 0.108495 $\pm$ 0.032532 & 2.009\\
+    4 & 3e-3 & 1e-4 & l$_{1}$ & balanced & 0.108466 $\pm$ 0.031692 & 2.056\\
+    5 & 3e-3 & 1e-6 & l$_{2}$ & balanced & 0.108432 $\pm$ 0.030833 & 1.925\\
+    \hline
+\end{tabular}
+}
+\label{gridsearch}
+\end{table}
+
+It was found that the best configuration (Rank 1 in Table \ref{gridsearch}) achieved a Test PR-AUC of 0.1082.
+
+\subsection{HalvingGrid Search Hyperparameter Tuning}\label{halvinggridsearch_section}
+
+HalvingGridSearchCV was then tested to find the most optimal hyperparameters. The same grid used in Section \ref{gridsearch_section} together with the same default parameters were used.
+The best hyperparameter configuration was found to be:
+
+\[
+\begin{aligned}
+\text{eta0} &= 0.01 \\
+\text{alpha} &= 0.001 \\
+\text{penalty} &= \text{l2} \\
+\text{class\_weight} &= \text{balanced}.
+\end{aligned}
+\]
+
+Finally, a summary of the results from the HalvingGridSearchCV can be seen in Figure \ref{halvinggridsearch_table}:
+
+\begin{table}[htbp]
+\caption{HalvingGridSearchCV Results}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|}
+    \hline
+    \#Evals & Runtime (min) & Best Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC \\
+    \hline
+    119 & 1.717 & 0.181609 $\pm$ 0.129919 & 0.09752\\
+    \hline
+\end{tabular}
+}
+\label{halvinggridsearch_table}
+\end{table}
+
+\subsection{Bayesian Optimisation Hyperparameter Tuning}\label{bayesian_section}
+
+Bayesian Optimisation was then run using the default parameters with only the following three changes to ensure consistency:
+
+\[
+\begin{aligned}
+\text{loss} &= \text{log\_loss} \\
+\text{class\_weight} &= \text{balanced} \\
+\text{random\_state} &= 42.
+\end{aligned}
+\]
+
+After running 40 trials using \emph{skopt.gp\_minimize} on the search space seen in Table \ref{bayesian_parameter_searchspace}:
+
+\begin{table}[htbp]
+\caption{Parameter Search Space}
+\centering
+    \begin{tabular}{|c|c|}
+    \hline
+    Parameter & Value \\
+    \hline
+    eta0 & 1e-5 - 1e-1 sampled log-uniformly \\
+    alpha & 1e-7 - 1e-2 sampled log-uniformly \\
+    penalty & {l1, l2} \\
+    learning-rate schedule & {constant, optimal, invscaling, adaptive} \\
+    \hline
+    \end{tabular}
+\label{bayesian_parameter_searchspace}
+\end{table}
+
+the best hyperparameter configuration was found to be:
+
+\[
+\begin{aligned}
+\text{eta0} &= 0.002088 \\
+\text{alpha} &= 3.319e-06 \\
+\text{penalty} &= \text{l1} \\
+\text{learning-rate schedule} &= \text{adaptive}.
+\end{aligned}
+\]
+
+In addition, the convergence plot showing the best objective score versus trial number can be seen in Figure \ref{convergence_plot}:
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\columnwidth]{images/convergence_plot.png}
+    \caption{Convergence Plot}
+    \label{convergence_plot}
+\end{figure}
+
+Finally, the comparison between the Grid Search hyperparameter tuning method and the Bayesian Optimization hyperparameter tuning method can be seen in Table \ref{bayesian_grid}:
+
+\begin{table}[htbp]
+\caption{Bayesian optimisation versus grid search comparison}
+\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Method & \#Evals & Runtime (min) & Best Val PR-AUC & Test PR-AUC \\
+    \hline
+    Grid Search & 80 & 2.433 & 0.1085 & 0.1082\\
+    Bayesian Opt & 40 & 2.967 & 0.1071 & 0.1101\\
+    \hline
+\end{tabular}
+}
+\label{bayesian_grid}
+\end{table}

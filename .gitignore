@@ -1,7 +1,22 @@
 .venv
-Report
-Resources
-diabetic_data.csv
-diabetic_data.xlsx
-IDS_mapping.csv
-MIT801_Assign1_2026.pdf
+
+# Ignore all auxiliary latex files
+*.aux
+*.log
+*.toc
+*.out
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.xml
+
+# Ignore general files
+*.pdf
+*.csv
+*.xlsx
+*.png
