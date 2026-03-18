@@ -10,9 +10,9 @@ Table \ref{baseline} indicates the results of the baseline DummyClassifier model
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{|c|c|c|c|c|}
     \hline
-    Train PR-AUC ($\mu \pm \sigma$) & Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC & Val Rec@P $\geq$ 0.8 ($\mu \pm \sigma$) & Train time (s)\\
+    \makecell{Train PR-AUC \\ ($\mu \pm \sigma$)} & \makecell{Val PR-AUC \\ ($\mu \pm \sigma$)} & Test PR-AUC & \makecell{Val Rec@P $\geq$ 0.8 \\ ($\mu \pm \sigma$)} & Train time (s)\\
     \hline
-    0.04868 $\pm$ 0.002375 & 0.04133 $\pm$ 0.01357 & 0.06050 & 0.0 $\pm$ 0.0 &  2.808\\
+    \makecell{0.04868 \\ $\pm$ 0.002375} & \makecell{0.04133 \\ $\pm$ 0.01357} & 0.06050 & \makecell{0.0 \\ $\pm$ 0.0} &  2.808\\
     \hline
 \end{tabular}
 }
@@ -24,7 +24,7 @@ The test PR-AUC is slighty higher than the threshold but still inline with what 
 
 \subsection{Controlled Learning-rate Experiment}\label{controlled_learningrate_section}
 
-The default parameters of the SGDClassifier model were used. The only parameters that were changed were the following:
+The default parameters of the \emph{SGDClassifier} model were used. The only parameters that were changed were the following:
 
 \[
 \begin{aligned}
@@ -44,11 +44,11 @@ Finally, Table \ref{sgd_learningrate} illustrates the results obtained from swee
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{|c|c|c|c|c|c|}
     \hline
-    LR (eta0) & Train PR-AUC ($\mu \pm \sigma$) & Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC & Val Rec@P $\geq$ 0.8 ($\mu \pm \sigma$) & Train Time (s) \\
+    LR (eta0) & \makecell{Train PR-AUC \\ ($\mu \pm \sigma$)} & \makecell{Val PR-AUC \\ ($\mu \pm \sigma$)} & Test PR-AUC & \makecell{Val Rec@P $\geq$ 0.8 \\ ($\mu \pm \sigma$)} & Train Time (s) \\
     \hline
-    1e-4 & 0.1450 $\pm$ 0.008539 & 0.09967 $\pm$ 0.03497 & 0.1070 & 0.0006289 $\pm$ 0.001406 & 4.3201\\
-    1e-3 & 0.1584 $\pm$ 0.01289 & 0.1071 $\pm$ 0.03752 & 0.1071 & 0.001258 $\pm$ 0.002813 & 3.538\\
-    1e-2 & 0.1383 $\pm$ 0.02150 & 0.09606 $\pm$ 0.03860 & 0.08772 & 0.001023 $\pm$ 0.001461 & 3.360\\
+    1e-4 & \makecell{0.1450 \\ $\pm$ 0.008539} & \makecell{0.09967 \\ $\pm$ 0.03497} & 0.1070 & \makecell{0.0006289 \\ $\pm$ 0.001406} & 4.3201\\
+    1e-3 & \makecell{0.1584 \\ $\pm$ 0.01289} & \makecell{0.1071 \\ $\pm$ 0.03752} & 0.1071 & \makecell{0.001258 \\ $\pm$ 0.002813} & 3.538\\
+    1e-2 & \makecell{0.1383 \\ $\pm$ 0.02150} & \makecell{0.09606 \\ $\pm$ 0.03860} & 0.08772 & \makecell{0.001023 \\ $\pm$ 0.001461} & 3.360\\
     \hline
 \end{tabular}
 }

@@ -1,7 +1,6 @@
 \section{Introduction}
 In the medical domain, one very important characteristic is the ability to predict when a patient is likely to be readmitted. In more specific, it is important to know
-when a patient is likely to be readmitted withing 30 days of discharge. This is important so that hospitals can setup the necessary care system needed for high risk patients in order to
-prevent early readmission. Early readmission is in particular a major problem as it generally results in an overwhelmed hospital team. This can easily be prevented
+when a patient is likely to be readmitted within     30 days of discharge. Early readmission is in particular a major problem as it generally results in an overwhelmed hospital team. This can easily be prevented
 by being able to predict patients that are of high risk so that suitable care pathways can be put in place to prevent the risk of readmission within 30 days. However,
 a fine balance must be struck in terms of making a prediction. Too many false negatives may result in high risk patients not getting the support they need, resulting
 in early readmissions. On the other hand, too many false positives can overwhelm the care team as they would be providing care pathways for patients that do not need
@@ -11,7 +10,7 @@ it. This in term, can result in actual high risk patients being neglected or mis
 When training a model to do such a prediction, one might be tempted to simply stop when the chosen evaluation metric is above a certain threshold. This may be 
 sufficient but in general it is not always the best solution. Many models rely on various parameters that can be tuned to get even better performance. It is thus
 very important to always perform hyperparameter tuning to get the best out of a prediction. In this report, the UCI Diabetes 130-US hospitals (1999-2008) dataset
-is used to predict whether a patient is likely to be readmitted wihtin 30 days or not using a logistic regression classifier with Stochastic Gradient Descent (SGD) training.
+is used to predict whether a patient is likely to be readmitted within 30 days or not using a logistic regression classifier with Stochastic Gradient Descent (SGD) training.
 Various forms of hyperparameter tuning is considered in an attempt to find the most optimal solution for this readmission classification problem.
 
 

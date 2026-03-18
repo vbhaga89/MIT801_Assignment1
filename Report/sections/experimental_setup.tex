@@ -8,7 +8,7 @@ training, validation and test sets may result in the model training on future da
 would not be present when making that prediction in a real world scenario \parencite{sasse2025overview}. In addition, other sources of temporal leakage were also identified and prevented. 
 These include patients appearing in multiple splits, imputing missing values using the entire dataset and diagnosis codes. The first source of temporal leakage was prevented
 by removing the smallest 'encounter\_id' for a specific 'patient\_nbr' as mentioned in Section \ref{data_cleaning}. The second source of temporal leakage was prevented by 
-building a split specific DataCleaner class that only uses data within a specific train, validation or test set to perform imputation. The last source of temporal leakage generally is
+building a split specific DataCleaner class that only uses data within the train set to impute the train, validation and test sets respectively. The last source of temporal leakage generally is
 coded after the encounter. This could be a concern if predictions are done during the encounter. However, in this case, the model is only predicting readmission 
 within 30 days after discharge. As a result, the diagnosis codes do not cause temporal leakage.
 
@@ -37,4 +37,4 @@ for preventive care.
 
 To aid evaluation, the dataset was trained using scikit-learn's DummyClassifier. This serves as a baseline model for minimum performance benchmark as this classifier makes predictions
 based on simple rules without producing any insight from the data. The results of the baseline model are shown in Section \ref{baseline_model}. This experiment explores
-hyperparamter tuning using various methods such as controlled learning-rate sweep, GridSearchCV and Bayesian Optimization.
+hyperparamter tuning using various methods such as controlled learning-rate sweep, GridSearchCV, HalvingGridSearchCV and Bayesian Optimization.
