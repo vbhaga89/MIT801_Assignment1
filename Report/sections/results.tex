@@ -12,7 +12,7 @@ Table \ref{baseline} indicates the results of the baseline DummyClassifier model
     \hline
     \makecell{Train PR-AUC \\ ($\mu \pm \sigma$)} & \makecell{Val PR-AUC \\ ($\mu \pm \sigma$)} & Test PR-AUC & \makecell{Val Rec@P $\geq$ 0.8 \\ ($\mu \pm \sigma$)} & Train time (s)\\
     \hline
-    \makecell{0.04868 \\ $\pm$ 0.002375} & \makecell{0.04133 \\ $\pm$ 0.01357} & 0.06050 & \makecell{0.0 \\ $\pm$ 0.0} &  2.808\\
+    \makecell{0.04868 \\ $\pm$ 0.002375} & \makecell{0.04134 \\ $\pm$ 0.01357} & 0.06050 & \makecell{0.0 \\ $\pm$ 0.0} &  0.9327\\
     \hline
 \end{tabular}
 }
@@ -46,9 +46,9 @@ Finally, Table \ref{sgd_learningrate} illustrates the results obtained from swee
     \hline
     LR (eta0) & \makecell{Train PR-AUC \\ ($\mu \pm \sigma$)} & \makecell{Val PR-AUC \\ ($\mu \pm \sigma$)} & Test PR-AUC & \makecell{Val Rec@P $\geq$ 0.8 \\ ($\mu \pm \sigma$)} & Train Time (s) \\
     \hline
-    1e-4 & \makecell{0.1450 \\ $\pm$ 0.008539} & \makecell{0.09967 \\ $\pm$ 0.03497} & 0.1070 & \makecell{0.0006289 \\ $\pm$ 0.001406} & 4.3201\\
-    1e-3 & \makecell{0.1584 \\ $\pm$ 0.01289} & \makecell{0.1071 \\ $\pm$ 0.03752} & 0.1071 & \makecell{0.001258 \\ $\pm$ 0.002813} & 3.538\\
-    1e-2 & \makecell{0.1383 \\ $\pm$ 0.02150} & \makecell{0.09606 \\ $\pm$ 0.03860} & 0.08772 & \makecell{0.001023 \\ $\pm$ 0.001461} & 3.360\\
+    1e-4 & \makecell{0.1451 \\ $\pm$ 0.008689} & \makecell{0.09970 \\ $\pm$ 0.03500} & 0.1069 & \makecell{0.0006289 \\ $\pm$ 0.001406} & 1.3874\\
+    1e-3 & \makecell{0.1583 \\ $\pm$ 0.01276} & \makecell{0.1070 \\ $\pm$ 0.03744} & 0.1070 & \makecell{0.001258 \\ $\pm$ 0.002813} & 1.2571\\
+    1e-2 & \makecell{0.1386 \\ $\pm$ 0.02155} & \makecell{0.09645 \\ $\pm$ 0.03911} & 0.08783 & \makecell{0.001023 \\ $\pm$ 0.001461} & 1.177\\
     \hline
 \end{tabular}
 }
@@ -89,11 +89,11 @@ Table \ref{gridsearch} illustrates the top 5 configurations after running GridSe
     \hline
     Rank & $n_{0}$ & alpha & penalty & class$_{wt}$ & Val PR-AUC ($\mu \pm \sigma$) & Runtime (s)\\
     \hline
-    1 & 3e-3 & 1e-5 & l$_{1}$ & balanced & 0.108537 $\pm$ 0.030966 & 2.024\\
-    2 & 3e-3 & 1e-6 & l$_{1}$ & balanced & 0.108509 $\pm$ 0.030986 & 2.825\\
-    3 & 1e-3 & 1e-3 & l$_{1}$ & balanced & 0.108495 $\pm$ 0.032532 & 2.009\\
-    4 & 3e-3 & 1e-4 & l$_{1}$ & balanced & 0.108466 $\pm$ 0.031692 & 2.056\\
-    5 & 3e-3 & 1e-6 & l$_{2}$ & balanced & 0.108432 $\pm$ 0.030833 & 1.925\\
+    1 & 3e-3 & 1e-4 & l$_{1}$ & balanced & 0.108714 $\pm$ 0.0315008 & 0.3834\\
+    2 & 3e-3 & 1e-5 & l$_{1}$ & balanced & 0.108663 $\pm$ 0.0308857 & 0.3844\\
+    3 & 3e-3 & 1e-5 & l$_{2}$ & balanced & 0.108534 $\pm$ 0.0309338 & 0.3578\\
+    4 & 3e-3 & 1e-6 & l$_{1}$ & balanced & 0.108446 $\pm$ 0.0306997 & 0.4040\\
+    5 & 3e-3 & 1e-4 & l$_{2}$ & balanced & 0.108437 $\pm$ 0.0308922 & 0.4040\\
     \hline
 \end{tabular}
 }
@@ -109,9 +109,9 @@ The best hyperparameter configuration was found to be:
 
 \[
 \begin{aligned}
-\text{eta0} &= 0.01 \\
-\text{alpha} &= 0.001 \\
-\text{penalty} &= \text{l2} \\
+\text{eta0} &= 0.0003 \\
+\text{alpha} &= 0.0001 \\
+\text{penalty} &= \text{l1} \\
 \text{class\_weight} &= \text{balanced}.
 \end{aligned}
 \]
@@ -124,9 +124,9 @@ Finally, a summary of the results from the HalvingGridSearchCV can be seen in Fi
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{|c|c|c|c|}
     \hline
-    \#Evals & Runtime (min) & Best Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC \\
+    \#Evals & Runtime (s) & Best Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC \\
     \hline
-    119 & 1.717 & 0.181609 $\pm$ 0.129919 & 0.09752\\
+    119 & 16.6 & 0.1041 $\pm$ 0.03261 & 0.1093\\
     \hline
 \end{tabular}
 }
@@ -167,8 +167,8 @@ the best hyperparameter configuration was found to be:
 
 \[
 \begin{aligned}
-\text{eta0} &= 0.002088 \\
-\text{alpha} &= 3.319e-06 \\
+\text{eta0} &= 0.009243 \\
+\text{alpha} &= 0.0001224 \\
 \text{penalty} &= \text{l1} \\
 \text{learning-rate schedule} &= \text{adaptive}.
 \end{aligned}
@@ -191,10 +191,10 @@ Finally, the comparison between the Grid Search hyperparameter tuning method and
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{|c|c|c|c|c|}
     \hline
-    Method & \#Evals & Runtime (min) & Best Val PR-AUC & Test PR-AUC \\
+    Method & \#Evals & Runtime (s) & Best Val PR-AUC ($\mu \pm \sigma$) & Test PR-AUC \\
     \hline
-    Grid Search & 80 & 2.433 & 0.1085 & 0.1082\\
-    Bayesian Opt & 40 & 2.967 & 0.1071 & 0.1101\\
+    Grid Search & 80 & 27.4 & 0.1087 $\pm$ 0.03150 & 0.1068\\
+    Bayesian Opt & 40 & 2.967 & 0.1073 $\pm$ 0.03073 & 0.1102\\
     \hline
 \end{tabular}
 }
