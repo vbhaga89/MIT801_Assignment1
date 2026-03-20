@@ -24,7 +24,7 @@ The test PR-AUC is slighty higher than the threshold but still inline with what 
 
 \subsection{Controlled Learning-rate Experiment}\label{controlled_learningrate_section}
 
-The default parameters of the \emph{SGDClassifier} model were used. The only parameters that were changed were the following:
+Firstly, the learning rate was tuned in isolation. The default parameters of the \emph{SGDClassifier} model were used. The only parameters that were changed were the following:
 
 \[
 \begin{aligned}
@@ -57,7 +57,7 @@ Finally, Table \ref{sgd_learningrate} illustrates the results obtained from swee
 
 \subsection{Grid Search Hyperparameter Tuning}\label{gridsearch_section}
 
-GridSearchCV was then tested to find the most optimal hyperparameters. The following grid space was used:
+Next, GridSearchCV was then tested to find the most optimal hyperparameters. The following grid space was used:
 
 \[
 \begin{aligned}
@@ -78,7 +78,7 @@ together with the default parameters of the \emph{SGDClassifier} model. The only
 \end{aligned}
 \]
 
-The GridSearchCV function was run with the mentioned grid space on 5 folds. As a result a total of 400 fits were performed with results obtained for each possible configuration.
+The GridSearchCV function was run with the mentioned grid space (80 combinations) on 5 folds. As a result a total of 400 fits were performed with results obtained for each possible configuration.
 Table \ref{gridsearch} illustrates the top 5 configurations after running GridSearchCV:
 
 \begin{table}[htbp]
@@ -100,11 +100,11 @@ Table \ref{gridsearch} illustrates the top 5 configurations after running GridSe
 \label{gridsearch}
 \end{table}
 
-It was found that the best configuration (Rank 1 in Table \ref{gridsearch}) achieved a Test PR-AUC of 0.1082.
+It was found that the best configuration (Rank 1 in Table \ref{gridsearch}) achieved a Test PR-AUC of 0.1068.
 
 \subsection{HalvingGrid Search Hyperparameter Tuning}\label{halvinggridsearch_section}
 
-HalvingGridSearchCV was then tested to find the most optimal hyperparameters. The same grid used in Section \ref{gridsearch_section} together with the same default parameters were used.
+Thereafter, HalvingGridSearchCV was then tested to find the most optimal hyperparameters. The same grid used in Section \ref{gridsearch_section} together with the same default parameters were used.
 The best hyperparameter configuration was found to be:
 
 \[
@@ -133,9 +133,9 @@ Finally, a summary of the results from the HalvingGridSearchCV can be seen in Fi
 \label{halvinggridsearch_table}
 \end{table}
 
-\subsection{Bayesian Optimisation Hyperparameter Tuning}\label{bayesian_section}
+\subsection{Bayesian Optimization Hyperparameter Tuning}\label{bayesian_section}
 
-Bayesian Optimisation was then run using the default parameters with only the following three changes to ensure consistency:
+Lastly, Bayesian optimization was then run using the default parameters with only the following three changes to ensure consistency:
 
 \[
 \begin{aligned}
@@ -174,19 +174,10 @@ the best hyperparameter configuration was found to be:
 \end{aligned}
 \]
 
-In addition, the convergence plot showing the best objective score versus trial number can be seen in Figure \ref{convergence_plot}:
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\columnwidth]{images/convergence_plot.png}
-    \caption{Convergence Plot}
-    \label{convergence_plot}
-\end{figure}
-
-Finally, the comparison between the Grid Search hyperparameter tuning method and the Bayesian Optimization hyperparameter tuning method can be seen in Table \ref{bayesian_grid}:
+In addition, the comparison between the Grid Search hyperparameter tuning method and the Bayesian Optimization hyperparameter tuning method can be seen in Table \ref{bayesian_grid}:
 
 \begin{table}[htbp]
-\caption{Bayesian optimisation versus grid search comparison}
+\caption{Bayesian optimization versus grid search comparison}
 \centering
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{|c|c|c|c|c|}
@@ -200,3 +191,14 @@ Finally, the comparison between the Grid Search hyperparameter tuning method and
 }
 \label{bayesian_grid}
 \end{table}
+
+Finally, the convergence plot showing the best objective score versus trial number can be seen in Figure \ref{convergence_plot}:
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\columnwidth]{images/convergence_plot.png}
+    \caption{Convergence Plot}
+    \label{convergence_plot}
+\end{figure}
+
+

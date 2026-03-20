@@ -2,21 +2,11 @@
 
 \subsection{Data Splitting and Leakage}\label{splitting}
 
-In terms of the experimental setup, data was split into training, validation and test sets. This was done as mentioned in Section \ref{data_cleaning} using the 'encounter\_id'
-column to perform time-aware splitting as this prevents temporal leakage. The dataset represents historical data from 1998 to 2008. Randomly splitting the data into
-training, validation and test sets may result in the model training on future data and then testing on past data. This is seen as a violation as that future information
-would not be present when making that prediction in a real world scenario \parencite{sasse2025overview}. In addition, other sources of temporal leakage were also identified and prevented. 
-These include patients appearing in multiple splits, imputing missing values using the entire dataset and diagnosis codes. The first source of temporal leakage was prevented
-by removing the smallest 'encounter\_id' for a specific 'patient\_nbr' as mentioned in Section \ref{data_cleaning}. The second source of temporal leakage was prevented by 
-building a split specific DataCleaner class that only uses data within the train set to impute the train, validation and test sets respectively. The last source of temporal leakage generally is
-coded after the encounter. This could be a concern if predictions are done during the encounter. However, in this case, the model is only predicting readmission 
-within 30 days after discharge. As a result, the diagnosis codes do not cause temporal leakage.
-
-In addition, cross validation was also used using scikit-learn's TimeSeriesSplit function. This was done to ensure that the model
-does not overfit to a specific time boundary. In other words, this was done to make the model more reliable and less dependent on a specific time boundary. Only the training and 
-validation sets were used for the cross validation. The test set was only used for the final evaluation of the model. After cleaning the data, 71518 rows were left.
-The last 15\% of the cleaned data was used for the test set. The remaining 85\% was used for the time series cross-validation using 5 splits and the default split criteria of 
-n\_samples // (n\_splits - 1). Figure \ref{tscv} illustrates the cross validation setup (green is the training set and red is the validation set):
+In terms of the experimental setup, data was split into training, validation and test sets. In addition, cross validation was also used using scikit-learn's \emph{TimeSeriesSplit} function. This was done to ensure that the model
+does not overfit to a specific time boundary (less dependent on a specific time boundary). Only the training and validation sets were used for the cross validation. The test set was only 
+used for the final evaluation of the model. After cleaning the data, 71518 rows were left. The last 15\% of the cleaned data was used for the test set. The remaining 85\% was used for the 
+time series cross-validation using 5 splits and the default split criteria of n\_samples // (n\_splits - 1). Figure \ref{tscv} illustrates the cross validation setup (green is the training 
+set and red is the validation set):
 
 \begin{figure}[h!]
     \centering
@@ -25,9 +15,18 @@ n\_samples // (n\_splits - 1). Figure \ref{tscv} illustrates the cross validatio
     \label{tscv}
 \end{figure}
 
+In addition, data leakage is also an important factor to always consider to prevent inaccurate results. Three sources of temporal leakage were identified and prevented. 
+These include patients appearing in multiple splits, imputing missing values using the entire dataset and diagnosis codes. The first source of temporal leakage was prevented
+by removing the smallest 'encounter\_id' for a specific 'patient\_nbr' as mentioned in Section \ref{data_cleaning}. The dataset represents historical data from 1998 to 2008. Randomly 
+splitting the data into training, validation and test sets may result in the model training on future data and then testing on past data. This is seen as a violation as that future information
+would not be present when making that prediction in a real world scenario \parencite{sasse2025overview}. The second source of temporal leakage was prevented by 
+building a split specific \emph{DataCleaner} class that only uses data within the train set to impute the train, validation and test sets respectively. The last source of temporal leakage is
+generally coded after the encounter. This could be a concern if predictions are done during the encounter. However, in this case, the model is only predicting readmission 
+within 30 days after discharge. As a result, the diagnosis codes did not cause temporal leakage.
+
 \subsection{Evaluation Metrics}
 
-The two primary evaluation metrics used for this experiment are PR-AUC and recall at fixed precision. PR-AUC was used as the primary evaluation metric as it is more informative 
+The two primary evaluation metrics used for this experiment are PR-AUC (Area Under the Precision-Recall Curve) and recall at fixed precision. PR-AUC was used as the primary evaluation metric as it is more informative 
 than ROC-AUC when dealing with imbalanced datasets. PR-AUC focuses on the minority class and ignores true negatives unlike ROC-AUC, providing a more accurate performance measure.
 This is especially relevant considering that the dataset contains only 4.5\% of positive cases. Using ROC-AUC and other metrics such as accuracy would be misleading as a model 
 that always predicts the negative class would achieve a high score. In addition, recall at fixed precision was also used as an evaluation metric as it 
@@ -37,4 +36,4 @@ for preventive care.
 
 To aid evaluation, the dataset was trained using scikit-learn's DummyClassifier. This serves as a baseline model for minimum performance benchmark as this classifier makes predictions
 based on simple rules without producing any insight from the data. The results of the baseline model are shown in Section \ref{baseline_model}. This experiment explores
-hyperparamter tuning using various methods such as controlled learning-rate sweep, GridSearchCV, HalvingGridSearchCV and Bayesian Optimization.
+hyperparamter tuning using various methods such as a controlled learning-rate sweep, GridSearchCV, HalvingGridSearchCV and Bayesian Optimization.

@@ -14,16 +14,23 @@ generalisation as well as training time. This learning rate would be best fit fo
 
 From the results obtained from Section \ref{gridsearch_section}, it is evident that there is a clear correlation between these results and the controlled learning rate sweep that
 was done in Section \ref{controlled_learningrate_section}. The best grid search configuration had a learning rate of 3e-3 which closely aligns with the best learning rate
-obtained from the controlled learning rate sweep, 1e-3. The best rank configuration also obtained a slightly better validation and test PR-AUC when compared to the best 
+obtained from the controlled learning rate sweep, 1e-3. The best rank configuration also obtained a slightly better validation PR-AUC when compared to the best 
 learning rate's results obtained from the controlled learning rate sweep. This indicates that other parameters such as alpha and penalty had a role to play since these differed
 from the defaults used during the controlled learning rate sweep experiment.
 
+\subsection{Halving Grid Search Hyperparameter Tuning}
+
+From the results obtained from Section \ref{halvinggridsearch_section}, it is evident that HalvingGridSearchCV performed better than GridSearchCV (Table \ref{bayesian_grid}) both in performance
+and compute time. HalvingGridSearchCV took almost half the time of GridSearchCV yet produced a better result. This is down to the fact that HalvingGridSearchCV is way more aggressive in finding
+the most optimal configuration. It must be noted that this may not always be the case and sometimes one will see a worse performance from HalvingGridSearchCV. Depending on what is more important
+(performance vs compute time) it is important to always test both methods to definitively rule out the weaker method with regards to the specific problem.
+
 \subsection{Bayesian Optimization Hyperparameter Tuning}\label{bayesian_discussion}
 
-From the results obtained from Section \ref{bayesian_section}, in specific Table \ref{bayesian_grid}, it can be seen that Bayesian optimisation peformed slightly better than
-grid search in terms of generalisation. Both have fairly similar parameters with the exception that the parameters obtained from Bayesian optimization are more specific which in turn 
-results in a better performance. The main reason as to why this is the case boils down to essentially how each method works. Grid search can only linearly sweep through the grid to find the 
-best combination whereas with Bayesian optimization, the model is able to logarithmically search through the space with its only constraints being the upper and lower limit of 
+From the results obtained from Section \ref{bayesian_section}, in specific Table \ref{bayesian_grid}, it can be seen that Bayesian optimization peformed slightly better than
+grid search in terms of generalisation. Both have fairly similar parameters with the exception that the parameters obtained from Bayesian optimization are more specific (efficient sampling) 
+which in turn results in a better performance. The main reason as to why this is the case boils down to essentially how each method works. Grid search can only linearly sweep through the grid 
+to find the best combination whereas with Bayesian optimization, the model is able to logarithmically search through the space with its only constraints being the upper and lower limit of 
 the search space. This generally leads to better overall performance at the cost of computation time depending on the number of calls made.
 
 \subsection{Comparative Analysis}
@@ -37,4 +44,4 @@ a search space, it can generally obtain a much better hyperparameter configurati
 plot (Figure \ref{convergence_plot}) which indicates that if more calls were used, this optimization technique would be able to find even better configurations that result
 in better performance. Lastly, it is also important to consider the learning rate used when optimising. It is clear from Section \ref{controlled_discussion} that the learning
 rate play a key role in model stability. Refining the optimum learning rate window at the beginning before running other optimization techniques can significantly reduce
-computation time and resources whilst producing better evaluation results.
+computation time and resources whilst potentially producing better evaluation results.
